@@ -1,4 +1,4 @@
-# Netreaper - MLShark Hackathon Project
+# Netreaper - ML Security Hackathon Project
 
 Adversarial-resilient intrusion detection on NSL-KDD.
 
