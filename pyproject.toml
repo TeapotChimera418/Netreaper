@@ -1,4 +1,4 @@
-[build-system]
+rmdir /s /q __pycache__[build-system]
 requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
