@@ -21,6 +21,20 @@ python -m pip install -r requirements.txt
 python stage_a_baseline.py
 ```
 
+## Stage B (Person 3) - Attack Simulation
+
+Run with dummy data (parallel-friendly while data pipeline is still in progress):
+
+```powershell
+python run_stage_b_attack.py
+```
+
+Run with real NSL-KDD split using Stage A preprocessing:
+
+```powershell
+python run_stage_b_attack.py --real-data --csv-path KDDTrain_with_headers.csv --model-type rf
+```
+
 The script runs both Random Forest and XGBoost baselines, prints metrics, and renders:
 
 - confusion matrices
