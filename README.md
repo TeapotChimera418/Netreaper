@@ -2,11 +2,28 @@
 
 Adversarial-resilient intrusion detection on NSL-KDD.
 
-## Current Scope
+## Flowchart
+
+```mermaid
+flowchart TD
+		A[KDDTrain_with_headers.csv] --> B[Stage A: Baseline Classifier\nstage_a_baseline.py]
+		B --> C[Benign / Attack Prediction]
+		B --> D[Stage B: Adversarial Attack Simulation\nattack_simulation.py + run_stage_b_attack.py]
+		D --> E[X_adversarial_samples.csv]
+		A --> F[Stage C: Train Isolation Forest Safety Net\nstage_c_anomaly.py]
+		F --> G[stage_c_isolation_forest.pkl]
+		F --> H[stage_c_shap_summary.png]
+		E --> I[Stage C Verification\nstage_c_test.py]
+		G --> I
+		I --> J[Final Decision for Integration\n(clf_pred == 1) OR (anomaly_pred == -1)]
+```
+
+## Project Scope
 
 - Stage A: Binary intrusion classification baseline (`stage_a_baseline.py`)
-- Stage B: Adversarial attack simulation for Person 3 (`attack_simulation.py`, `run_stage_b_attack.py`)
-- Stage C: Anomaly detection (`python stage_c_anomaly.py`,`python stage_c_test.py`)
+- Stage B: Adversarial attack simulation (`attack_simulation.py`, `run_stage_b_attack.py`)
+- Stage C: Anomaly detection safety net (`stage_c_anomaly.py`, `stage_c_test.py`)
+- Demo UI: Streamlit app (`app.py`)
 
 ## Dataset
 
@@ -22,82 +39,73 @@ Adversarial-resilient intrusion detection on NSL-KDD.
 python -m pip install -r requirements.txt
 ```
 
-## Run Stage A Baseline
+## Run Guide
+
+### Stage A - Baseline classification
 
 ```bash
 python stage_a_baseline.py
 ```
 
-Stage A runs Random Forest + XGBoost and reports:
-
+Outputs include:
 - Accuracy, Precision, Recall, F1, ROC-AUC
-- confusion matrix plots
-- feature importance plots
-- ROC curves
-- comparison summary table
+- Confusion matrix and ROC plots
+- Feature importance plots
 
-## Run Stage B (Person 3) Attack Simulation
+### Stage B - Adversarial attack simulation
 
-### 1) Dummy mode (parallel-friendly)
+Dummy mode:
 
 ```bash
 python run_stage_b_attack.py
 ```
 
-Use this while data preprocessing is still in progress.
-
-### 2) Real data mode (plug-in after data pipeline)
+Real-data mode:
 
 ```bash
 python run_stage_b_attack.py --real-data --csv-path KDDTrain_with_headers.csv --model-type rf
 ```
 
-Optional model type:
+Optional model type values:
+- `rf`
+- `xgb`
 
-- `--model-type rf`
-- `--model-type xgb`
+Outputs include:
+- Clean vs adversarial accuracy
+- Accuracy drop and attack success rate
+- Average L2 and L-infinity perturbation
 
-Stage B reports:
+### Stage C - Isolation Forest anomaly safety net
 
-- clean accuracy
-- adversarial accuracy
-- accuracy drop
-- attack success rate
-- average L2 perturbation
-- average L-infinity perturbation
+Train Stage C model + SHAP explanation plot:
 
-## Stage C (Person 4) - Anomaly Detection (Safety Net)
-Stage C implements an unsupervised "Safety Net" designed to catch adversarial samples that successfully bypass the Stage A baseline.
-
-### Key Features
-
-- Unsupervised Learning: Utilizes an IsolationForest trained exclusively on "normal" traffic to establish a secure behavioral baseline.
-- Explainability: Integrated SHAP (SHapley Additive exPlanations) to provide transparency into why specific traffic is flagged.
-- Adversarial Resilience: Designed to detect "outlier" patterns in adversarial samples that appear normal to supervised classifiers.
-
-Run Anomaly Training:
-To train the Isolation Forest and generate the SHAP explainability plot:
 ```bash
 python stage_c_anomaly.py
 ```
 
-Run Adversarial Verification:
-To test the Safety Net against the stealth attacks generated in Stage B:
+Test adversarial detection using Stage B outputs:
+
 ```bash
 python stage_c_test.py
 ```
 
-Stage C runs Isolation Forest and reports: 
-- Adversarial Detection Rate: Reports the percentage of Stage B attacks successfully flagged as anomalies (99.65%).
-- Explainability (SHAP Summary): A visual summary (stage_c_shap_summary.png) showing feature-level contributions to anomaly scores.
-- Model Artifact: stage_c_isolation_forest.pkl for final system integration.
-- Anomaly Metrics: Comparison of Total Attacks Tested vs. Attacks Caught.
+Generated artifacts:
+- `stage_c_isolation_forest.pkl`
+- `stage_c_shap_summary.png`
 
-## Integration Notes
+### Streamlit demo app
 
-- Person 3 (this module) provides adversarial robustness metrics.
-- Person 5 can combine classifier output + anomaly output using:
+```bash
+streamlit run app.py
+```
+
+## Integration Contract
+
+- Stage C anomaly convention:
+	- `-1` = anomaly
+	- `1` = normal
+- Team integration rule:
 	- `(clf_pred == 1) OR (anomaly_pred == -1)`
 
-See `handover.md` and `context.md` for teammate-facing handoff details.
+See `handover.md` and `context.md` for teammate handoff details.
 
