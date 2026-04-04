@@ -89,8 +89,7 @@ ConfusionMatrixDisplay.from_predictions(y_test_binary, final_pred)
 plt.title("Final IDS Confusion Matrix")
 plt.show()
 
-
-# STEP 12: SAVE OUTPUT
+# Final Dataset Generation
 df_out = pd.DataFrame({
     "Actual": y_test_binary,
     "Predicted": final_pred
