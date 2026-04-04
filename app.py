@@ -39,9 +39,7 @@ df = load_training_data()
 clf_model, X_test, y_test = build_artifacts(df)
 iso_model = load_iso_model()
 
-# =========================
-# SIDEBAR CONTROLS
-# =========================
+
 st.sidebar.header("⚙️ Controls")
 
 use_attack = st.sidebar.checkbox("Enable Adversarial Attack", value=False)
@@ -54,15 +52,11 @@ noise_level = st.sidebar.slider(
     step=0.05
 )
 
-# =========================
-# STAGE A
-# =========================
+
 clf_pred = clf_model.predict(X_test)
 acc_stage_a = accuracy_score(y_test, clf_pred)
 
-# =========================
-# STAGE B (OPTIONAL ATTACK)
-# =========================
+
 if use_attack:
     # Strong + consistent attack
     noise = np.random.normal(0, noise_level, X_test.shape)
@@ -75,9 +69,7 @@ else:
     clf_pred_input = clf_pred
     acc_adv = None
 
-# =========================
-# STAGE C
-# =========================
+
 X_test_df = pd.DataFrame(X_input)
 
 if hasattr(iso_model, "feature_names_in_"):
@@ -88,17 +80,11 @@ if hasattr(iso_model, "feature_names_in_"):
 
 anomaly_pred = iso_model.predict(X_test_df)
 
-# =========================
-# FINAL DECISION
-# =========================
 final_pred = clf_pred_input.copy()
 final_pred[anomaly_pred == -1] = 1
 
 acc_final = accuracy_score(y_test, final_pred)
 
-# =========================
-# METRICS (AUTO-DETECT COLUMNS)
-# =========================
 
 st.subheader("Model Performance")
 
@@ -201,9 +187,6 @@ with tab_raw:
     st.subheader("🧾 Output CSV Snapshot")
     st.dataframe(output_df.head(100))
 
-# =========================
-# EXPLANATION
-# =========================
 st.subheader("🧠 Explanation")
 
 st.write(f"""
