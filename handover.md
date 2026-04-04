@@ -49,6 +49,11 @@
 	- Output included all expected robustness metrics.
 - Stage B real-data path is wired to Stage A preprocessing/training and is ready once the dataset path is available.
 
+- Stage C Verification executed successfully:
+    - Command: python stage_c_test.py
+    - Adversarial Detection Rate: 99.65%
+    - Result: Flagged 25,108 out of 25,195 adversarial samples as anomalies (-1).
+
 ## Current Workspace Files (relevant)
 
 - `KDDTrain_with_headers.csv`
@@ -59,6 +64,11 @@
 - `requirements.txt`
 - `context.md`
 - `handover.md`
+- `stage_c_anomaly.py`
+- `stage_c_test.py`
+- `stage_c_isolation_forest.pkl`
+- `stage_c_shap_summary.png`
+- `X_adversarial_samples.csv`
 
 ## Integration Contract For Teammates
 
