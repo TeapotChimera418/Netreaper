@@ -25,6 +25,6 @@ predictions = model.predict(X_adv_final)
 
 # 6. Report Results
 detected = np.sum(predictions == -1)
-print(f"--- Final Stage C Verification ---")
+print(f"Final Stage C Verification")
 print(f"Attacks Caught: {detected} / {len(X_adv_final)}")
 print(f"Detection Rate: {(detected / len(X_adv_final)) * 100:.2f}%")
