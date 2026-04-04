@@ -48,7 +48,7 @@ def run_stage_c():
     test_sample = X_train_normal.sample(5, random_state=42)
     shap_values = explainer.shap_values(test_sample)
 
-    # Generate a summary plot for your report (Requirement: Metrics for reporting) [cite: 2, 3]
+    # Generate a summary plot for report 
     plt.figure(figsize=(10, 6))
     shap.summary_plot(shap_values, test_sample, show=False)
     plt.title("Stage C: Feature Importance for Anomaly Detection")
