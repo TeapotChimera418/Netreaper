@@ -71,9 +71,9 @@ Stage C implements an unsupervised "Safety Net" designed to catch adversarial sa
 
 ### Key Features
 
-Unsupervised Learning: Utilizes an IsolationForest trained exclusively on "normal" traffic to establish a secure behavioral baseline.
-Explainability: Integrated SHAP (SHapley Additive exPlanations) to provide transparency into why specific traffic is flagged.
-Adversarial Resilience: Designed to detect "outlier" patterns in adversarial samples that appear normal to supervised classifiers.
+- Unsupervised Learning: Utilizes an IsolationForest trained exclusively on "normal" traffic to establish a secure behavioral baseline.
+- Explainability: Integrated SHAP (SHapley Additive exPlanations) to provide transparency into why specific traffic is flagged.
+- Adversarial Resilience: Designed to detect "outlier" patterns in adversarial samples that appear normal to supervised classifiers.
 
 Run Anomaly Training:
 To train the Isolation Forest and generate the SHAP explainability plot:
