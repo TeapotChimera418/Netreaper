@@ -6,7 +6,7 @@ Adversarial-resilient intrusion detection on NSL-KDD.
 
 - Stage A: Binary intrusion classification baseline (`stage_a_baseline.py`)
 - Stage B: Adversarial attack simulation for Person 3 (`attack_simulation.py`, `run_stage_b_attack.py`)
-- Stage C: Anomaly detection (planned)
+- Stage C: Anomaly detection (`python stage_c_anomaly.py`,`python stage_c_test.py`)
 
 ## Dataset
 
