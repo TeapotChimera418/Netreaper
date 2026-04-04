@@ -6,7 +6,7 @@ import shap
 import matplotlib.pyplot as plt
 
 def run_stage_c():
-    print("--- Stage C: MLShark Anomaly Detection ---")
+    print("--- Stage C: NetReaper Anomaly Detection ---")
     
     # 1. Load Data (Using the same headers from Person 1) 
     try:
