@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Any
+import joblib
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -35,7 +36,11 @@ def preprocess_data(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, pd.Se
     label_as_text = data["label"].astype(str).str.strip().str.lower()
     y = (label_as_text != "normal").astype(int)
     x = data.drop(columns=["label"])
+    if "difficulty" in data.columns:
+        data = data.drop(columns=["difficulty"])
 
+    x = data.drop(columns=["label"])
+    
     categorical_cols = x.select_dtypes(include=["object", "category", "bool"]).columns.tolist()
     numeric_cols = [col for col in x.columns if col not in categorical_cols]
 
@@ -96,11 +101,11 @@ def train_model(x_train: pd.DataFrame, y_train: pd.Series, model_type: str) -> A
 
     if model_key == "rf":
         model = RandomForestClassifier(
-            n_estimators=300,  # robust baseline size for tabular intrusion data
-            min_samples_leaf=2,  # light regularization to reduce noisy splits
-            class_weight="balanced",  # compensates normal/attack class imbalance
-            n_jobs=-1,
-            random_state=42,
+            n_estimators=50,
+            max_depth=8,
+            min_samples_leaf=10,
+            max_features="sqrt",
+            random_state=42
         )
     elif model_key == "xgb":
         try:
@@ -256,9 +261,17 @@ def main(df: pd.DataFrame) -> dict[str, np.ndarray]:
     metrics_summary: dict[str, dict[str, float]] = {}
     predictions: dict[str, np.ndarray] = {}
 
-    for model_key, model_name in (("rf", "Random Forest"), ("xgb", "XGBoost")):
+    for model_key, model_name in (("rf", "Random Forest"),):
         model = train_model(x_train, y_train, model_key)
         y_pred, y_score = evaluate_model(model, x_test, y_test, model_name)
+
+        joblib.dump(model, "stage_a_model.pkl")
+
+        # Save processed test data
+        np.save("X_test.npy", x_test.values)
+        np.save("y_test.npy", y_test.values)
+
+        joblib.dump(x_train.columns.tolist(), "feature_names.pkl")
 
         metrics_summary[model_name] = _compute_metrics(y_test, y_pred, y_score)
         predictions[model_name] = y_pred
@@ -272,7 +285,7 @@ def main(df: pd.DataFrame) -> dict[str, np.ndarray]:
 
 
 if __name__ == "__main__":
-    default_path = Path("KDDTrain_with_headers.csv")
+    default_path = Path(r"F:\NetReaper\KDDTrain_with_headers.csv")
     if not default_path.exists():
         raise SystemExit(
             "Provide a pandas DataFrame to main(df), or place KDDTrain_with_headers.csv in the project root."
@@ -280,3 +293,4 @@ if __name__ == "__main__":
 
     dataframe = pd.read_csv(default_path)
     _ = main(dataframe)
+
