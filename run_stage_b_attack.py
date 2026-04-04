@@ -10,7 +10,7 @@ from sklearn.ensemble import RandomForestClassifier
 from attack_simulation import StageBAttackSimulator
 from stage_a_baseline import preprocess_data, train_model
 
-
+# This function creates dummy data at random ranges
 def _build_dummy_data(seed: int = 42) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     rng = np.random.default_rng(seed)
     x_train = rng.random((1000, 20))
@@ -19,7 +19,7 @@ def _build_dummy_data(seed: int = 42) -> tuple[np.ndarray, np.ndarray, np.ndarra
     y_test = rng.integers(0, 2, 200)
     return x_train, y_train, x_test, y_test
 
-
+# This runs the model on the dummy data we generated
 def run_dummy_mode(noise_std: float, model_trees: int) -> None:
     x_train, y_train, x_test, y_test = _build_dummy_data()
     model = RandomForestClassifier(n_estimators=model_trees, random_state=42, n_jobs=-1)
@@ -36,7 +36,7 @@ def run_dummy_mode(noise_std: float, model_trees: int) -> None:
     print(f"avg_l2_perturbation  : {result.avg_l2_perturbation:.4f}")
     print(f"avg_linf_perturbation: {result.avg_linf_perturbation:.4f}")
 
-
+# This runs the model on the actual _adversial csv dataset
 def run_real_data_mode(csv_path: Path, noise_std: float, model_type: str) -> None:
     if not csv_path.exists():
         raise SystemExit(f"Dataset not found: {csv_path}")
@@ -57,7 +57,7 @@ def run_real_data_mode(csv_path: Path, noise_std: float, model_type: str) -> Non
     print(f"avg_l2_perturbation  : {result.avg_l2_perturbation:.4f}")
     print(f"avg_linf_perturbation: {result.avg_linf_perturbation:.4f}")
 
-
+# It lets you customise how the script runs in the command line without changing the code itself [Ex: python run_script.py [customised arguments]]
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Stage B adversarial attack simulation runner")
     parser.add_argument("--real-data", action="store_true", help="Use NSL-KDD CSV + Stage A preprocess")
