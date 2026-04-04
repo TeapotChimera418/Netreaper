@@ -88,10 +88,12 @@ To test the Safety Net against the stealth attacks generated in Stage B:
 python stage_c_test.py
 ```
 
-### Results Summary:
-Detection Rate: 99.65% (Successfully flagged adversarial samples as anomalies).
-
-Explainability: Feature importance visualization saved to stage_c_shap_summary.png.
+Stage C runs Isolation Forest and reports: 
+	- Adversarial Detection Rate: Reports the percentage of Stage B attacks successfully flagged as anomalies.
+	- SHAP Summary Plot: Visualizes feature-level contributions to anomaly scores (Explainable AI).
+	- Model Artifact: stage_c_isolation_forest.pkl for final system integration.
+	- Anomaly Metrics: Total Attacks Tested vs. Attacks Caught.
+	- Explainability: Feature importance visualization saved to stage_c_shap_summary.png.
 
 ## Integration Notes
 
