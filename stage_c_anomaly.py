@@ -10,7 +10,7 @@ def run_stage_c():
     
     # 1. Load Data (Using the same headers from Person 1) 
     try:
-        df = pd.read_csv('KDDTrain_with_headers.csv') 
+        df = pd.read_csv(r"F:\NetReaper\KDDTrain_with_headers.csv") 
     except FileNotFoundError:
         print("Error: KDDTrain_with_headers.csv not found.")
         return
@@ -19,8 +19,8 @@ def run_stage_c():
     # Step A: Filter for ONLY 'normal' traffic to train the "Safety Net"
     train_normal = df[df['label'] == 'normal'].copy()
     
-    cols_to_drop = ['label', 'difficulty'] # Use 'difficulty' instead of 'difficulty_level'
-    train_normal = train_normal.drop(columns=cols_to_drop, errors='ignore')
+    # Step B: Identify columns to drop safely
+    cols_to_drop = ['label', 'difficulty']
     # Only keep columns that actually exist in the dataframe
     existing_cols_to_drop = [c for c in cols_to_drop if c in train_normal.columns]
     
@@ -30,7 +30,6 @@ def run_stage_c():
     X_train_normal = X_train_normal.select_dtypes(include=[np.number])
     
     print(f"Features used for training: {list(X_train_normal.columns)}")
-
 
     # 3. Train Isolation Forest 
     # contamination=0.05 assumes 5% of training data might be 'noise'
