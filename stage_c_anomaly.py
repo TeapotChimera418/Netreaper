@@ -8,18 +8,17 @@ import matplotlib.pyplot as plt
 def run_stage_c():
     print("--- Stage C: NetReaper Anomaly Detection ---")
     
-    # 1. Load Data (Using the same headers from Person 1) 
+    # 1. Load Data
     try:
         df = pd.read_csv(r"F:\NetReaper\KDDTrain_with_headers.csv") 
     except FileNotFoundError:
         print("Error: KDDTrain_with_headers.csv not found.")
         return
 
-    # 2. Data Preparation (Aligning with Stage A)
-    # Step A: Filter for ONLY 'normal' traffic to train the "Safety Net"
+    # 2. Data Preparation
     train_normal = df[df['label'] == 'normal'].copy()
     
-    # Step B: Identify columns to drop safely
+    # Columns to drop safely
     cols_to_drop = ['label', 'difficulty']
     train_normal = train_normal.drop(columns=cols_to_drop, errors='ignore')
     # Only keep columns that actually exist in the dataframe
@@ -27,13 +26,13 @@ def run_stage_c():
     
     X_train_normal = train_normal.drop(existing_cols_to_drop, axis=1)
     
-    # Step C: Select only numeric features (Isolation Forest requirement)
+    # We select only the numeric features
     X_train_normal = X_train_normal.select_dtypes(include=[np.number])
     
     print(f"Features used for training: {list(X_train_normal.columns)}")
 
-    # 3. Train Isolation Forest 
-    # contamination=0.05 assumes 5% of training data might be 'noise'
+    # Train Isolation Forest 
+    # We are assuming 5% of data might be noise 
     iso_forest = IsolationForest(n_estimators=100, contamination=0.05, random_state=42)
     iso_forest.fit(X_train_normal)
     print("Isolation Forest trained on normal traffic baseline.")
@@ -42,8 +41,7 @@ def run_stage_c():
     joblib.dump(iso_forest, 'stage_c_isolation_forest.pkl')
     print("Model saved as stage_c_isolation_forest.pkl")
 
-    # 5. Explainability with SHAP 
-    # We use a small subset for the explainer to save time
+    # 5. Explainability with SHAP
     explainer = shap.TreeExplainer(iso_forest)
     
     # Test on a small sample of the normal data
