@@ -70,10 +70,9 @@ Stage B reports:
 Stage C implements an unsupervised "Safety Net" designed to catch adversarial samples that successfully bypass the Stage A baseline.
 
 ### Key Features
+
 Unsupervised Learning: Utilizes an IsolationForest trained exclusively on "normal" traffic to establish a secure behavioral baseline.
-
 Explainability: Integrated SHAP (SHapley Additive exPlanations) to provide transparency into why specific traffic is flagged.
-
 Adversarial Resilience: Designed to detect "outlier" patterns in adversarial samples that appear normal to supervised classifiers.
 
 Run Anomaly Training:
@@ -89,11 +88,11 @@ python stage_c_test.py
 ```
 
 Stage C runs Isolation Forest and reports: 
-	- Adversarial Detection Rate: Reports the percentage of Stage B attacks successfully flagged as anomalies.
-	- SHAP Summary Plot: Visualizes feature-level contributions to anomaly scores (Explainable AI).
-	- Model Artifact: stage_c_isolation_forest.pkl for final system integration.
-	- Anomaly Metrics: Total Attacks Tested vs. Attacks Caught.
-	- Explainability: Feature importance visualization saved to stage_c_shap_summary.png.
+- Adversarial Detection Rate: Reports the percentage of Stage B attacks successfully flagged as anomalies.
+- SHAP Summary Plot: Visualizes feature-level contributions to anomaly scores (Explainable AI).
+- Model Artifact: stage_c_isolation_forest.pkl for final system integration.
+- Anomaly Metrics: Total Attacks Tested vs. Attacks Caught.
+- Explainability: Feature importance visualization saved to stage_c_shap_summary.png.
 
 ## Integration Notes
 
