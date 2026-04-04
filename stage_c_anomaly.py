@@ -21,6 +21,7 @@ def run_stage_c():
     
     # Step B: Identify columns to drop safely
     cols_to_drop = ['label', 'difficulty']
+    train_normal = train_normal.drop(columns=cols_to_drop, errors='ignore')
     # Only keep columns that actually exist in the dataframe
     existing_cols_to_drop = [c for c in cols_to_drop if c in train_normal.columns]
     
