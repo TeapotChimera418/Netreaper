@@ -1,6 +1,3 @@
-# =========================
-# IMPORTS
-# =========================
 import pandas as pd
 import numpy as np
 import joblib
@@ -20,18 +17,14 @@ from sklearn.metrics import (
     ConfusionMatrixDisplay,
 )
 
-# =========================
-# LOAD DATA
-# =========================
+# Load Data
 df = pd.read_csv(r"F:\NetReaper\KDDTrain_with_headers.csv")
 
 if "difficulty" in df.columns:
     df = df.drop(columns=["difficulty"])
 
 
-# =========================
-# PREPROCESS FUNCTION
-# =========================
+# Preprocessor function
 def preprocess_data(df):
     data = df.copy()
 
@@ -66,9 +59,7 @@ def preprocess_data(df):
     return X_train, X_test, y_train, y_test
 
 
-# =========================
-# MODEL FUNCTION
-# =========================
+# Random forest
 def train_model(X_train, y_train, model_type):
     model = RandomForestClassifier(
         n_estimators=50,
@@ -83,24 +74,18 @@ def train_model(X_train, y_train, model_type):
     return model
 
 
-# =========================
-# PIPELINE START
-# =========================
+# Start of the pipeline
 X_train, X_test, y_train, y_test = preprocess_data(df)
 
 # Stage A
 clf_model = train_model(X_train, y_train, "rf")
 clf_pred = clf_model.predict(X_test)
 
-# =========================
-# STAGE B - ATTACK
-# =========================
+# Stage B - Attack
 X_adv = X_test + np.random.normal(0.7, 1.3, X_test.shape)
 clf_pred_adv = clf_model.predict(X_adv)
 
-# =========================
-# STAGE C - ANOMALY
-# =========================
+# Stage C - Anomaly
 iso_model = joblib.load(r"F:\NetReaper\stage_c_isolation_forest.pkl")
 
 X_test_for_iso = pd.DataFrame(X_test)
@@ -113,15 +98,11 @@ if hasattr(iso_model, "feature_names_in_"):
 
 anomaly_pred = iso_model.predict(X_test_for_iso)
 
-# =========================
-# FINAL LOGIC
-# =========================
+#Final Logic
 final_pred = clf_pred_adv.copy()
 final_pred[anomaly_pred == -1] = 1
 
-# =========================
-# RESULTS
-# =========================
+# Results
 print("\n=== RESULTS ===")
 
 print("\nStage A Accuracy:")
@@ -139,16 +120,12 @@ print(classification_report(y_test, final_pred))
 print("\nConfusion Matrix:")
 print(confusion_matrix(y_test, final_pred))
 
-# =========================
-# VISUALIZATION
-# =========================
+# Visulaization
 ConfusionMatrixDisplay.from_predictions(y_test, final_pred)
 plt.title("Final IDS Confusion Matrix")
 plt.show()
 
-# =========================
-# SAVE OUTPUT
-# =========================
+# Save Output
 df_out = pd.DataFrame({
     "Actual": y_test,
     "Predicted": final_pred
