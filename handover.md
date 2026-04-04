@@ -42,6 +42,22 @@
 	- Real-data mode (after Person 1):
 		- `python run_stage_b_attack.py --real-data --csv-path KDDTrain_with_headers.csv --model-type rf`
 
+### Stage C (Person 4 - Anomaly Detection)
+
+- File: `stage_c_anomaly.py`
+	- Trains an IsolationForest on "normal" baseline traffic.
+ 	- Generates SHAP summary plots for model explainability (XAI).
+
+- File: `stage_c_test.py`
+  	- Validates the safety net against Stage B adversarial samples.
+  	- Cleans prefixed column names (e.g., num__) to align adversarial data with the model's expected 42 numeric features.
+
+- Model Artifact: `stage_c_isolation_forest.pkl`
+  	- The trained unsupervised model ready for integration.
+
+- Visualization: `stage_c_shap_summary.png`
+  	- Illustrates the key features (e.g., src_bytes, count) that trigger the anomaly detection safety net.
+
 ## Validation Performed
 
 - Stage B dummy flow executed successfully in venv:
