@@ -6,7 +6,7 @@ from sklearn.metrics import confusion_matrix, classification_report, accuracy_sc
 from stage_a_baseline import preprocess_data, train_model
 
 # 1. Loading the data
-df = pd.read_csv(r"F:\NetReaper\KDDTrain_with_headers.csv")
+df = pd.read_csv(r"KDDTrain_with_headers.csv")
 
 # 2. Processed Data (Unified Split)
 # This ensures X_test and y_test are perfectly aligned (0=Normal, 1=Attack)
@@ -19,7 +19,7 @@ clf_pred = clf_model.predict(X_test)
 
 # 4. Running Stage C (Anomaly Detection)
 print("--- Running Stage C (Anomaly Detection) ---")
-iso_model = joblib.load(r"F:\NetReaper\stage_c_isolation_forest.pkl")
+iso_model = joblib.load(r"stage_c_isolation_forest.pkl")
 
 # Prepare numeric columns from the processed X_test
 X_test_numeric = X_test.select_dtypes(include=[np.number]).copy()
