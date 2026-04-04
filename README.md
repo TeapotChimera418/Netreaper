@@ -88,11 +88,10 @@ python stage_c_test.py
 ```
 
 Stage C runs Isolation Forest and reports: 
-- Adversarial Detection Rate: Reports the percentage of Stage B attacks successfully flagged as anomalies.
-- SHAP Summary Plot: Visualizes feature-level contributions to anomaly scores (Explainable AI).
+- Adversarial Detection Rate: Reports the percentage of Stage B attacks successfully flagged as anomalies (99.65%).
+- Explainability (SHAP Summary): A visual summary (stage_c_shap_summary.png) showing feature-level contributions to anomaly scores.
 - Model Artifact: stage_c_isolation_forest.pkl for final system integration.
-- Anomaly Metrics: Total Attacks Tested vs. Attacks Caught.
-- Explainability: Feature importance visualization saved to stage_c_shap_summary.png.
+- Anomaly Metrics: Comparison of Total Attacks Tested vs. Attacks Caught.
 
 ## Integration Notes
 
