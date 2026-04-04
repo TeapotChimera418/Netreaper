@@ -7,7 +7,7 @@
 - Delivery status:
 	- Stage A (classification): implemented and runnable
 	- Stage B (adversarial attack simulation): implemented for Person 3
-	- Stage C (anomaly detection): pending
+	- Stage C (anomaly detection): implemented and runnable
 
 ## What Is Implemented Now
 
@@ -44,7 +44,7 @@
 
 ### Stage C (Person 4 - Anomaly Detection)
 
-- File: stage_c_anomaly.py
+- File: `stage_c_anomaly.py`
   	- Logic: Filters dataset for "normal" traffic only to establish a behavioral baseline for the Safety Net.
   	- Training: Executes an IsolationForest fit on 42 numeric features to detect deviations from normal network state.
   	- Explainability: Implements shap.TreeExplainer to interpret model decisions and identify feature-level anomalies, i.e, interpret the decision boundaries of 	  the safety net.
@@ -52,7 +52,7 @@
   	  	- stage_c_isolation_forest.pkl: The serialized model for Person 5 to load.
   	  	- stage_c_shap_summary.png: Visual evidence of feature importance for the final report.
 
-- File: stage_c_test.py
+- File: `stage_c_test.py`
   	- Functionality: Conducts final adversarial resilience testing.
   	- Alignment: Strips num__ and cat__ prefixes from Stage B data to ensure mathematical compatibility with the Stage C model.
 
@@ -70,7 +70,7 @@
 - Stage B real-data path is wired to Stage A preprocessing/training and is ready once the dataset path is available.
 
 - Stage C Verification executed successfully:
-    - Command: python stage_c_test.py
+    - Command: `python stage_c_test.py`
     - Adversarial Detection Rate: 99.65%
     - Result: Flagged 25,108 out of 25,195 adversarial samples as anomalies (-1).
 
