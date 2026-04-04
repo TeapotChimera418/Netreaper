@@ -44,13 +44,17 @@
 
 ### Stage C (Person 4 - Anomaly Detection)
 
-- File: `stage_c_anomaly.py`
-	- Trains an IsolationForest on "normal" baseline traffic.
- 	- Generates SHAP summary plots for model explainability (XAI).
+- File: stage_c_anomaly.py
+  	- Logic: Filters dataset for "normal" traffic only to establish a behavioral baseline for the Safety Net.
+  	- Training: Executes an IsolationForest fit on 42 numeric features to detect deviations from normal network state.
+  	- Explainability: Implements shap.TreeExplainer to interpret model decisions and identify feature-level anomalies, i.e, interpret the decision boundaries of 	  the safety net.
+  	- Outputs Produced:
+  	  	- stage_c_isolation_forest.pkl: The serialized model for Person 5 to load.
+  	  	- stage_c_shap_summary.png: Visual evidence of feature importance for the final report.
 
-- File: `stage_c_test.py`
-  	- Validates the safety net against Stage B adversarial samples.
-  	- Cleans prefixed column names (e.g., num__) to align adversarial data with the model's expected 42 numeric features.
+- File: stage_c_test.py
+  	- Functionality: Conducts final adversarial resilience testing.
+  	- Alignment: Strips num__ and cat__ prefixes from Stage B data to ensure mathematical compatibility with the Stage C model.
 
 - Model Artifact: `stage_c_isolation_forest.pkl`
   	- The trained unsupervised model ready for integration.
