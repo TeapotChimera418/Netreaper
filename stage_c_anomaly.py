@@ -10,7 +10,7 @@ def run_stage_c():
     
     # 1. Load Data
     try:
-        df = pd.read_csv(r"F:\NetReaper\KDDTrain_with_headers.csv") 
+        df = pd.read_csv(r"KDDTrain_with_headers.csv") 
     except FileNotFoundError:
         print("Error: KDDTrain_with_headers.csv not found.")
         return
