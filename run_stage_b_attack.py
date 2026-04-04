@@ -56,6 +56,8 @@ def run_real_data_mode(csv_path: Path, noise_std: float, model_type: str) -> Non
     print(f"attack_success_rate  : {result.attack_success_rate:.4f}")
     print(f"avg_l2_perturbation  : {result.avg_l2_perturbation:.4f}")
     print(f"avg_linf_perturbation: {result.avg_linf_perturbation:.4f}")
+    x_adv = simulator.generate_adversarial(x_test.to_numpy(dtype=float))
+    pd.DataFrame(x_adv[1], columns=x_test.columns).to_csv("X_adversarial_samples.csv", index=False)
 
 # It lets you customise how the script runs in the command line without changing the code itself [Ex: python run_script.py [customised arguments]]
 def parse_args() -> argparse.Namespace:
