@@ -15,7 +15,7 @@ flowchart TD
 		F --> H[stage_c_shap_summary.png]
 		E --> I[Stage C Verification\nstage_c_test.py]
 		G --> I
-		I --> J[Final Decision for Integration\n(clf_pred == 1) OR (anomaly_pred == -1)]
+		I --> J[Final Decision for Integration\nClassify as attack if classifier says attack or anomaly model flags anomaly]
 ```
 
 ## Project Scope

@@ -33,7 +33,7 @@ flowchart TD
 
     B2 --> F[Final Integration\nfinal_pipeline.py / app.py]
     E1 --> F
-    F --> F1[Decision Rule:\nattack if (clf_pred == 1) OR (anomaly_pred == -1)]
+    F --> F1[Decision Rule:\nAttack if classifier predicts attack or anomaly model flags anomaly]
     F1 --> FA1[final_output_with_labels.csv]
 
     F --> G[Streamlit Demo\napp.py]
