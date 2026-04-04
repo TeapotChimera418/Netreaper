@@ -66,6 +66,33 @@ Stage B reports:
 - average L2 perturbation
 - average L-infinity perturbation
 
+## Stage C (Person 4) - Anomaly Detection (Safety Net)
+Stage C implements an unsupervised "Safety Net" designed to catch adversarial samples that successfully bypass the Stage A baseline.
+
+### Key Features
+Unsupervised Learning: Utilizes an IsolationForest trained exclusively on "normal" traffic to establish a secure behavioral baseline.
+
+Explainability: Integrated SHAP (SHapley Additive exPlanations) to provide transparency into why specific traffic is flagged.
+
+Adversarial Resilience: Designed to detect "outlier" patterns in adversarial samples that appear normal to supervised classifiers.
+
+Run Anomaly Training:
+To train the Isolation Forest and generate the SHAP explainability plot:
+```bash
+python stage_c_anomaly.py
+```
+
+Run Adversarial Verification:
+To test the Safety Net against the stealth attacks generated in Stage B:
+```bash
+python stage_c_test.py
+```
+
+### Results Summary:
+Detection Rate: 99.65% (Successfully flagged adversarial samples as anomalies).
+
+Explainability: Feature importance visualization saved to stage_c_shap_summary.png.
+
 ## Integration Notes
 
 - Person 3 (this module) provides adversarial robustness metrics.
