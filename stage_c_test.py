@@ -8,8 +8,8 @@ model = joblib.load('stage_c_isolation_forest.pkl')
 # 2. Load the Adversarial Samples
 X_adv = pd.read_csv('X_adversarial_samples.csv')
 
-# 3. FIX: Match the columns to what the Isolation Forest expects
-# Your Isolation Forest was trained on raw numeric columns from the CSV
+# 3.Match the columns to what the Isolation Forest expects
+# Isolation Forest was trained on raw numeric columns from the CSV
 # We must ensure we aren't using the 'cat__' or 'num__' prefixed names
 if any(col.startswith('num__') or col.startswith('cat__') for col in X_adv.columns):
     # Strip the prefixes if they exist
